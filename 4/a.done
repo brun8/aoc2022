@@ -1,0 +1,54 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func main() {
+  lines := readLines()
+
+  var total int
+  for _, line := range lines {
+    a, b := parseLine(line, ",")
+    beg1, end1 := parseSection(a)
+    beg2, end2 := parseSection(b)
+
+    if beg1 <= beg2 && end1 >= end2 {
+      total++
+    } else if beg2 <= beg1 && end2 >= end1 {
+      total++
+    }
+  }
+
+  fmt.Println(total)
+}
+
+func parseSection(s string) (int, int) {
+  b, e := parseLine(s, "-")
+  beg, _ := strconv.Atoi(b)
+  end, _ := strconv.Atoi(e)
+  return beg, end
+}
+
+func parseLine(s, sep string) (string, string) {
+  parsed := strings.Split(s, sep)
+  return parsed[0], parsed[1]
+}
+
+func readLines() []string {
+  f, _ := os.Open("input.txt")
+  //f, _ := os.Open("input_test.txt")
+  defer f.Close()
+
+  lines := make([]string, 0)
+  scanner := bufio.NewScanner(f)
+  for scanner.Scan() {
+    lines = append(lines, scanner.Text())
+  }
+  return lines
+}
+

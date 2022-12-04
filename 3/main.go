@@ -8,7 +8,7 @@ import (
 
 // eu nao tenho orgulho nenhum do que foi feito aqui no dia de hoje
 func main() {
-  f, _ := os.Open("input.txt")
+	f, _ := os.Open("input.txt")
 	//f, _ := os.Open("input_test.txt")
 	defer f.Close()
 
@@ -18,9 +18,9 @@ func main() {
 		lines = append(lines, scanner.Text())
 	}
 
-  total := 0
+	total := 0
 	for i := 0; i < len(lines); i += 3 {
-    cur := 0
+		cur := 0
 		found1 := make(map[rune]bool)
 		found2 := make(map[rune]bool)
 		for _, c := range lines[i] {
@@ -31,13 +31,13 @@ func main() {
 		}
 		for _, c := range lines[i+2] {
 			if found1[c] && found2[c] {
-        cur += getPriority(c)
-        break
+				cur += getPriority(c)
+				break
 			}
 		}
-    total += cur
+		total += cur
 	}
-  fmt.Println(total)
+	fmt.Println(total)
 }
 
 func split(s string) (string, string) {

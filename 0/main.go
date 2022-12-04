@@ -13,7 +13,8 @@ func main() {
 }
 
 func readLines() []string {
-  f, _ := os.Open("input.txt")
+  //f, _ := os.Open("input.txt")
+  f, _ := os.Open("input_test.txt")
   defer f.Close()
 
   lines := make([]string, 0)

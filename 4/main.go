@@ -9,46 +9,45 @@ import (
 )
 
 func main() {
-  lines := readLines()
+	lines := readLines()
 
-  var total int
-  for _, line := range lines {
-    a, b := parseLine(line, ",")
-    beg1, end1 := parseSection(a)
-    beg2, end2 := parseSection(b)
+	var total int
+	for _, line := range lines {
+		a, b := parseLine(line, ",")
+		beg1, end1 := parseSection(a)
+		beg2, end2 := parseSection(b)
 
-    if beg2 >= beg1 && beg2 <= end1 {
-      total++
-    } else if beg1 >= beg2 && beg1 <= end2 {
-      total++
-    }
-  }
+		if beg2 >= beg1 && beg2 <= end1 {
+			total++
+		} else if beg1 >= beg2 && beg1 <= end2 {
+			total++
+		}
+	}
 
-  fmt.Println(total)
+	fmt.Println(total)
 }
 
 func parseSection(s string) (int, int) {
-  b, e := parseLine(s, "-")
-  beg, _ := strconv.Atoi(b)
-  end, _ := strconv.Atoi(e)
-  return beg, end
+	b, e := parseLine(s, "-")
+	beg, _ := strconv.Atoi(b)
+	end, _ := strconv.Atoi(e)
+	return beg, end
 }
 
 func parseLine(s, sep string) (string, string) {
-  parsed := strings.Split(s, sep)
-  return parsed[0], parsed[1]
+	parsed := strings.Split(s, sep)
+	return parsed[0], parsed[1]
 }
 
 func readLines() []string {
-  f, _ := os.Open("input.txt")
-  //f, _ := os.Open("input_test.txt")
-  defer f.Close()
+	f, _ := os.Open("input.txt")
+	//f, _ := os.Open("input_test.txt")
+	defer f.Close()
 
-  lines := make([]string, 0)
-  scanner := bufio.NewScanner(f)
-  for scanner.Scan() {
-    lines = append(lines, scanner.Text())
-  }
-  return lines
+	lines := make([]string, 0)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines
 }
-

@@ -44,15 +44,15 @@ func main() {
 
 		cur := 0
 
-    if b == "X" {
-      cur += loose[a]
-    } else if b == "Y" {
-      cur += draw[a] + 3
-    } else {
-      cur += win[a] + 6
-    }
+		if b == "X" {
+			cur += loose[a]
+		} else if b == "Y" {
+			cur += draw[a] + 3
+		} else {
+			cur += win[a] + 6
+		}
 		score += cur
 	}
 
-  fmt.Println(score)
+	fmt.Println(score)
 }

@@ -25,53 +25,53 @@ func main() {
 }
 
 func getScore(x, y, target int, lines []string) int {
-  total := 1
+	total := 1
 
-  curScore := 0
-  for i := y+1; i<len(lines); i++ {
-    cur, _ := strconv.Atoi(string(lines[i][x]))
-    curScore++
-    if cur >= target {
-      break
-    }
-  }
-  total *= curScore
+	curScore := 0
+	for i := y + 1; i < len(lines); i++ {
+		cur, _ := strconv.Atoi(string(lines[i][x]))
+		curScore++
+		if cur >= target {
+			break
+		}
+	}
+	total *= curScore
 
-  curScore = 0
-  for i := y-1; i>=0; i-- {
-    cur, _ := strconv.Atoi(string(lines[i][x]))
-    curScore++
-    if cur >= target {
-      break
-    }
-  }
-  total *= curScore
+	curScore = 0
+	for i := y - 1; i >= 0; i-- {
+		cur, _ := strconv.Atoi(string(lines[i][x]))
+		curScore++
+		if cur >= target {
+			break
+		}
+	}
+	total *= curScore
 
-  curScore = 0
-  for j := x+1; j<len(lines[0]); j++ {
-    cur, _ := strconv.Atoi(string(lines[y][j]))
-    curScore++
-    if cur >= target {
-      break
-    }
-  }
-  total *= curScore
+	curScore = 0
+	for j := x + 1; j < len(lines[0]); j++ {
+		cur, _ := strconv.Atoi(string(lines[y][j]))
+		curScore++
+		if cur >= target {
+			break
+		}
+	}
+	total *= curScore
 
-  curScore = 0
-  for j := x-1; j>=0; j-- {
-    cur, _ := strconv.Atoi(string(lines[y][j]))
-    curScore++
-    if cur >= target {
-      break
-    }
-  }
-  total *= curScore
-  
-  return total
+	curScore = 0
+	for j := x - 1; j >= 0; j-- {
+		cur, _ := strconv.Atoi(string(lines[y][j]))
+		curScore++
+		if cur >= target {
+			break
+		}
+	}
+	total *= curScore
+
+	return total
 }
 
 func readLines() []string {
-  f, _ := os.Open("input.txt")
+	f, _ := os.Open("input.txt")
 	//f, _ := os.Open("input_test.txt")
 	defer f.Close()
 

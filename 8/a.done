@@ -1,0 +1,69 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func main() {
+	lines := readLines()
+
+	total := 2*len(lines) + 2*(len(lines[0])-2)
+	for y := 1; y < len(lines)-1; y++ {
+		for x := 1; x < len(lines[0])-1; x++ {
+			target, _ := strconv.Atoi(string(lines[y][x]))
+			if checkVisible(x, y, target, lines) {
+        total++
+      }
+		}
+	}
+
+	fmt.Println(total)
+}
+
+func checkVisible(x, y, target int, lines []string) bool {
+  visible := true
+	for j := 0; j < len(lines[0]); j++ {
+    cur, _ := strconv.Atoi(string(lines[y][j]))
+    if j == x {
+      if visible {
+        return visible
+      }
+      visible = true
+      continue
+    }
+    visible = visible && cur < target
+	}
+  if visible {
+    return true
+  } 
+
+  visible = true
+	for i := 0; i < len(lines); i++ {
+    cur, _ := strconv.Atoi(string(lines[i][x]))
+    if i == y {
+      if visible {
+        return visible
+      }
+      visible = true
+      continue
+    }
+    visible = visible && cur < target
+	}
+	return visible
+}
+
+func readLines() []string {
+  f, _ := os.Open("input.txt")
+  //f, _ := os.Open("input_test.txt")
+	defer f.Close()
+
+	lines := make([]string, 0)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines
+}

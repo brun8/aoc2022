@@ -22,23 +22,16 @@ func main() {
 	lines := readLines()
 
 	start := 0
-	prod := 1
-
 	ms := make([]*Monkey, 0)
 	for i, line := range lines {
 		if len(line) == 0 {
-			m := parseMonkey(lines[start:i])
-			prod *= m.divisible
-			ms = append(ms, m)
+			ms = append(ms, parseMonkey(lines[start:i]))
 			start = i + 1
 		}
 	}
+	ms = append(ms, parseMonkey(lines[start:]))
 
-	m := parseMonkey(lines[start:])
-	prod *= m.divisible
-	ms = append(ms, m)
-
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 20; i++ {
 		for _, m := range ms {
 			// ids dos macacos que vao receber os items, pra eu nao modificar o
 			// array enquanto eu itero por ele
@@ -46,7 +39,7 @@ func main() {
 
 			for i, item := range m.items {
 				m.inspected++
-				val := m.Inspect(item, prod)
+				val := m.Inspect(item)
 				m.items[i] = val
 				test := testDivisible(val, m.divisible)
 				var targetId int
@@ -67,13 +60,51 @@ func main() {
 		}
 	}
 	sortMonkeys(ms)
+	printMonkeys(ms)
 	fmt.Println(ms[0].inspected * ms[1].inspected)
 }
 
-func (m Monkey) Inspect(num, prod int) int {
-	n := runOperation(m.operation, num)
+func sortMonkeys(ms []*Monkey) {
+	sort.Slice(ms, func(i, j int) bool {
+		return ms[i].inspected > ms[j].inspected
+	})
+}
 
-	return n % prod
+func printMonkeys(ms []*Monkey) {
+	for _, m := range ms {
+		fmt.Printf("%+v\n", m)
+	}
+}
+
+func (m Monkey) Inspect(num int) int {
+	n := runOperation(m.operation, num)
+	n /= 3
+
+	return n
+}
+
+func parseMonkey(lines []string) *Monkey {
+	m := &Monkey{}
+	m.items = parseItems(lines[1])
+	m.operation = parseOperation(lines[2])
+	m.divisible = getIntAtEnd(lines[3])
+	m.ifTrue = getIntAtEnd(lines[4])
+	m.ifFalse = getIntAtEnd(lines[5])
+
+	return m
+}
+
+func testDivisible(a, b int) bool {
+	return a%b == 0
+}
+
+func getIntAtEnd(line string) int {
+	parsed := strings.Split(line, " ")
+	ns := parsed[len(parsed)-1]
+
+	n, _ := strconv.Atoi(ns)
+
+	return n
 }
 
 func runOperation(op string, old int) int {
@@ -99,42 +130,6 @@ func runOperation(op string, old int) int {
 	} else {
 		return a * b
 	}
-}
-
-func sortMonkeys(ms []*Monkey) {
-	sort.Slice(ms, func(i, j int) bool {
-		return ms[i].inspected > ms[j].inspected
-	})
-}
-
-func printMonkeys(ms []*Monkey) {
-	for i, m := range ms {
-		fmt.Printf("%d: %d\n", i, m.inspected)
-	}
-}
-
-func parseMonkey(lines []string) *Monkey {
-	m := &Monkey{}
-	m.items = parseItems(lines[1])
-	m.operation = parseOperation(lines[2])
-	m.divisible = getIntAtEnd(lines[3])
-	m.ifTrue = getIntAtEnd(lines[4])
-	m.ifFalse = getIntAtEnd(lines[5])
-
-	return m
-}
-
-func testDivisible(a, b int) bool {
-	return a%b == 0
-}
-
-func getIntAtEnd(line string) int {
-	parsed := strings.Split(line, " ")
-	ns := parsed[len(parsed)-1]
-
-	n, _ := strconv.Atoi(ns)
-
-	return n
 }
 
 func parseOperation(line string) string {
